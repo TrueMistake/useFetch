@@ -7,9 +7,10 @@ export function useFetch(url) {
     error: null
   });
 
-  function fetching() {
-    setStatus({loading: true})
-    fetch(url)
+  function fetching(option) {
+    setStatus({loading: true});
+    const result = option ? option : '';
+    fetch(`${url}${result}`)
       .then((data) => data.json())
       .then(res => {
         setStatus({loading: false, data: res})
@@ -20,14 +21,7 @@ export function useFetch(url) {
   }
 
   function refetch(option) {
-    fetch(`${url}${option}`)
-      .then((data) => data.json())
-      .then(res => {
-        setStatus({loading: false, data: res})
-      })
-      .catch(e => {
-        setStatus({loading: false, error: e})
-      })
+    fetching(option);
   }
 
   useEffect(() => {
